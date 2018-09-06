@@ -6,7 +6,7 @@ public class MonkeyController : MonoBehaviour {
 
     public GameManager gameManager;
     public List<GameObject> positions = new List<GameObject>();
-    int currentPosition = 0;
+    public int currentPosition = 0;
     public float moveDelay = 1.0f;
     float lastMoveTime;
 
@@ -47,7 +47,7 @@ public class MonkeyController : MonoBehaviour {
         }
     }
 
-    void Die()
+    public void Die()
     {
         Destroy(transform.parent.gameObject);
     }
@@ -56,9 +56,4 @@ public class MonkeyController : MonoBehaviour {
     private void Update () {
 		
 	}
-
-    private int getMonkeyPosition()
-    {
-        return currentPosition;
-    }
 }

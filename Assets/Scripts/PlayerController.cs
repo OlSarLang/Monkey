@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     public List<Transform> positions = new List<Transform>();
-    int currentPos = 1;
+    public int currentPos = 1;
 
     private void OnEnable() {
         PlayerInput.OnLeftPressed += Input_OnLeftPressed;
