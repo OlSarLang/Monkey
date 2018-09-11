@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour{
     // Use this for initialization
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour{
     public SpriteChanger spriteChanger;
     public float moveDelay = 3.0f;
     bool pause = false;
+
+    public ScoreUpdater scoreUpdater;
 
     public List<GameObject> monkeysLeft = new List<GameObject>();
     public GameObject MonkeyLeft;
@@ -37,11 +40,11 @@ public class GameManager : MonoBehaviour{
     
     public GameObject Player;
     static int playerPos;
-    static int score;
+    int score;
     int coconuts;
-    List<GameObject> coconutsLeft;
-    List<GameObject> coconutsMid;
-    List<GameObject> coconutsRight;
+    List<GameObject> coconutsLeft = new List<GameObject>();
+    List<GameObject> coconutsMid = new List<GameObject>();
+    List<GameObject> coconutsRight = new List<GameObject>();
 
 
     int spawner = 0;
@@ -169,5 +172,10 @@ public class GameManager : MonoBehaviour{
             yield return new WaitForSeconds(moveDelay);
             RandomSpawner();
         }
+    }
+
+    public int getScore()
+    {
+        return score;
     }
 }
