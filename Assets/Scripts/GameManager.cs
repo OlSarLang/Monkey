@@ -28,15 +28,32 @@ public class GameManager : MonoBehaviour{
     bool monkeyRightAlive = false;
     int amountRight;
 
+    public GameObject coconutOnePrefab;
+    public GameObject coconutTwoPrefab;
+    public GameObject coconutThreePrefab;
+    public GameObject coconutFourPrefab;
+    public GameObject coconutFivePrefab;
+    public GameObject coconutSixPrefab;
+    
     public GameObject Player;
     static int playerPos;
     static int score;
-    public List<GameObject> coconuts;
+    int coconuts;
+    List<GameObject> coconutsLeft;
+    List<GameObject> coconutsMid;
+    List<GameObject> coconutsRight;
+
 
     int spawner = 0;
 
     void Start(){
         Player = Instantiate(Player);
+        coconutsLeft.Add(Instantiate(coconutOnePrefab));
+        coconutsLeft.Add(Instantiate(coconutTwoPrefab));
+        coconutsMid.Add(Instantiate(coconutThreePrefab));
+        coconutsMid.Add(Instantiate(coconutFourPrefab));
+        coconutsRight.Add(Instantiate(coconutFivePrefab));
+        coconutsRight.Add(Instantiate(coconutSixPrefab));
         score = 0;
         StartCoroutine(NewSpawn());
     }
@@ -46,6 +63,7 @@ public class GameManager : MonoBehaviour{
         newMonkeyLeft.GetComponentInChildren<MonkeyController>().gameManager = this;
         Debug.Log("monkey created");
         amountLeft++;
+        monkeyLeftAlive = true;
         return;
 
     }
@@ -53,6 +71,7 @@ public class GameManager : MonoBehaviour{
         newMonkeyMid = Instantiate(MonkeyMid);
         newMonkeyMid.GetComponentInChildren<MonkeyController>().gameManager = this;
         amountMid++;
+        monkeyMidAlive = true;
         return;
 
     }
@@ -60,11 +79,13 @@ public class GameManager : MonoBehaviour{
         newMonkeyRight = Instantiate(MonkeyRight);
         newMonkeyRight.GetComponentInChildren<MonkeyController>().gameManager = this;
         amountRight++;
+        monkeyRightAlive = true;
         return;
     }
 
     public bool HitCheck(GameObject monkey){
-        if (monkeyLeftAlive == true && newMonkeyLeft.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos == 0) {
+        //Debug.Log("Hitcheck körs");
+        if (monkeyLeftAlive == true && newMonkeyLeft.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos == 0){
             spriteChanger.HitLeft();
             Debug.Log("Monkey Left Hit!");
             score++;
@@ -72,17 +93,19 @@ public class GameManager : MonoBehaviour{
             amountLeft--;
             return true;
         } else if (monkeyLeftAlive == true && newMonkeyLeft.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos != 0){
+            Destroy(coconutsLeft[0]);
+            coconutsLeft.RemoveAt(0);
             amountLeft--;
             return false;
         }
-        if (monkeyMidAlive == true && newMonkeyMid.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos == 1) {
+        if (monkeyMidAlive == true && newMonkeyMid.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos == 1){
             spriteChanger.HitMid();
             Debug.Log("Monkey Mid Hit!");
             score++;
             Debug.Log(score);
             amountMid--;
             return true;
-        } else if (monkeyMidAlive == true && newMonkeyMid.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos != 1) {
+        } else if (monkeyMidAlive == true && newMonkeyMid.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos != 1){
             amountMid--;
             return false;
         }
@@ -94,7 +117,7 @@ public class GameManager : MonoBehaviour{
             Debug.Log(score);
             amountRight--;
             return true;
-        }   else if (monkeyRightAlive == true && newMonkeyRight.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos != 2) {
+        } else if (monkeyRightAlive == true && newMonkeyRight.GetComponentInChildren<MonkeyController>().currentPosition == 3 && playerPos != 2){
             amountRight--;
             return false;
         }
@@ -102,45 +125,49 @@ public class GameManager : MonoBehaviour{
     }
 
     public void RandomSpawner(){
+        Debug.Log("RandomSpawner körs");
         spawner = Random.Range(0, 3);
-        if (spawner == 0 && amountLeft < 2) {
-            if (amountLeft < 2) {
+        if (spawner == 0 && amountLeft < 2){
+            if (amountLeft < 1){
                 Debug.Log("Amount of monkeys left: " + amountLeft);
                 NewMonkeyLeft();
             }
-        } else if (spawner == 1 && amountMid < 2) {
-            if (amountMid < 2) {
+        }
+        else if (spawner == 1 && amountMid < 2){
+            if (amountMid < 1){
                 Debug.Log("Amount of monkeys mid: " + amountMid);
                 NewMonkeyMid();
             }
-        } else if (spawner == 2 && amountRight < 2){
-            if(amountRight < 2){
+        }
+        else if (spawner == 2 && amountRight < 2){
+            if (amountRight < 1){
                 Debug.Log("Amount of monkeys right: " + amountRight);
                 NewMonkeyRight();
             }
-        }else
+        }
+        else
             return;
     }
 
     // Update is called once per frame
     void Update(){
         playerPos = playerController.GetPosition();
-        if(amountLeft < 1){
+        if (amountLeft < 1){
             monkeyLeftAlive = false;
         }
-        if(amountMid < 1){
+        if (amountMid < 1){
             monkeyMidAlive = false;
         }
-        if(amountRight < 1){
+        if (amountRight < 1){
             monkeyRightAlive = false;
         }
     }
 
-    IEnumerator NewSpawn()
-    {
-        pause = true;
-        yield return new WaitForSeconds(moveDelay);
-        RandomSpawner();
-        pause = false;
+    IEnumerator NewSpawn(){
+        while (true){
+            Debug.Log("NewSpawn() körs");
+            yield return new WaitForSeconds(moveDelay);
+            RandomSpawner();
+        }
     }
 }
