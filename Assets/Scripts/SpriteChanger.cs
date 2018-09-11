@@ -7,46 +7,68 @@ public class SpriteChanger : MonoBehaviour {
     public Sprite idleLeft, idleMid, idleRight;
     public Sprite hitLeft, hitMid, hitRight;
     public PlayerController playerController;
-    public float hitTime = 0.2f;
+    public float hitTime = 1.0f;
     // Use this for initialization
+
+    bool pause = false;
+
 	void Start () {
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+    if (pause)
+        return;
+
         if (playerController.GetPosition() == 0) {
             playerController.GetComponent<SpriteRenderer>().sprite = idleLeft;
-            Debug.Log("idleLeft");
         }
         if (playerController.GetPosition() == 1)
         {
             playerController.GetComponent<SpriteRenderer>().sprite = idleMid;
-            Debug.Log("idleMid");
         }
         if (playerController.GetPosition() == 2)
         {
             playerController.GetComponent<SpriteRenderer>().sprite = idleRight;
-            Debug.Log("idleRight");
         }
 	}
 
-    public void HitLeft()
-    {
+    public void HitLeft(){
+        StartCoroutine(HitLeftDelay());
+    }
+
+    IEnumerator HitLeftDelay() {
+        Debug.Log("Sprite should change");
         playerController.GetComponent<SpriteRenderer>().sprite = hitLeft;
-        hitTime = Time.time;
-        playerController.GetComponent<SpriteRenderer>().sprite = idleLeft;
+        pause = true;
+        yield return new WaitForSeconds(hitTime);
+        pause = false;
     }
-    public void HitMid()
-    {
+
+    public void HitMid(){
+        StartCoroutine(HitMidDelay());
+    }
+
+    IEnumerator HitMidDelay() {
+        Debug.Log("Sprite should change");
         playerController.GetComponent<SpriteRenderer>().sprite = hitMid;
-        hitTime = Time.time;
-        playerController.GetComponent<SpriteRenderer>().sprite = idleMid;
+        pause = true;
+        yield return new WaitForSeconds(hitTime);
+        pause = false;
     }
-    public void HitRight()
-    {
+
+    public void HitRight() {
+        StartCoroutine(HitRightDelay());
+    }
+
+    IEnumerator HitRightDelay(){
+        Debug.Log("Sprite should change");
         playerController.GetComponent<SpriteRenderer>().sprite = hitRight;
-        hitTime = Time.time;
-        playerController.GetComponent<SpriteRenderer>().sprite = idleRight;
+        pause = true;
+        yield return new WaitForSeconds(hitTime);
+        pause = false;
+
     }
 }

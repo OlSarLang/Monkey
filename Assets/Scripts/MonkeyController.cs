@@ -10,6 +10,7 @@ public class MonkeyController : MonoBehaviour {
     public float moveDelay = 1.0f;
     float lastMoveTime;
 
+
 	// Use this for initialization
 	private void Start () {
         transform.position = positions[currentPosition].transform.position;
@@ -28,28 +29,28 @@ public class MonkeyController : MonoBehaviour {
         }
     }
 
-    IEnumerator MoveToNextPosition()
-    {
+    IEnumerator MoveToNextPosition(){
         currentPosition++;
-        if(currentPosition >= positions.Count)
-        {
-            currentPosition = 0;
+        if(currentPosition >= positions.Count - 1){;
+            LeanTween.move(gameObject, positions[positions.Count - 1].transform.position, 1.0f).setOnComplete(() => Die());
+            StopCoroutine(MoveToNextPosition());
         }
 
-        transform.position = positions[currentPosition].transform.position;
-        lastMoveTime = Time.time;
+        if(currentPosition < positions.Count - 1){
+            transform.position = positions[currentPosition].transform.position;
+            lastMoveTime = Time.time;
+        }
 
         yield return null;
         if (gameManager.HitCheck(gameObject)){
             Die();
         }else{
-            Debug.Log("Continue!");
         }
     }
-
+    
     public void Die()
     {
-        Destroy(transform.parent.gameObject);
+        Destroy(gameObject);
     }
 	
 	// Update is called once per frame

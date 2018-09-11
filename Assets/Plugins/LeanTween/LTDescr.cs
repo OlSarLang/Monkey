@@ -2280,6 +2280,11 @@ public class LTDescr
 
 		return this;
 	}
+
+    public void setOnComplete()
+    {
+        throw new NotImplementedException();
+    }
 }
 
 //}
