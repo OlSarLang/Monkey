@@ -40,7 +40,6 @@ public class SpriteChanger : MonoBehaviour {
     }
 
     IEnumerator HitLeftDelay() {
-        Debug.Log("Sprite should change");
         playerController.GetComponent<SpriteRenderer>().sprite = hitLeft;
         pause = true;
         yield return new WaitForSeconds(hitTime);
@@ -52,7 +51,6 @@ public class SpriteChanger : MonoBehaviour {
     }
 
     IEnumerator HitMidDelay() {
-        Debug.Log("Sprite should change");
         playerController.GetComponent<SpriteRenderer>().sprite = hitMid;
         pause = true;
         yield return new WaitForSeconds(hitTime);
@@ -64,7 +62,6 @@ public class SpriteChanger : MonoBehaviour {
     }
 
     IEnumerator HitRightDelay(){
-        Debug.Log("Sprite should change");
         playerController.GetComponent<SpriteRenderer>().sprite = hitRight;
         pause = true;
         yield return new WaitForSeconds(hitTime);

@@ -50,7 +50,7 @@ public class MonkeyController : MonoBehaviour {
     
     public void Die()
     {
-        Destroy(gameObject);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 	
 	// Update is called once per frame

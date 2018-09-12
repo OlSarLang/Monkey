@@ -5,12 +5,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     public List<Transform> positions = new List<Transform>();
-    public int currentPos = 1;
-
     private void OnEnable() {
         PlayerInput.OnLeftPressed += Input_OnLeftPressed;
         PlayerInput.OnRightPressed += Input_OnRightPressed;
     }
+    public int currentPos = 1;
+
+
     private void OnDisable() {
         PlayerInput.OnLeftPressed -= Input_OnLeftPressed;
         PlayerInput.OnRightPressed -= Input_OnRightPressed;
